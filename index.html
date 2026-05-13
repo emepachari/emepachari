@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>emepachari — Mishel Pacheco Arias</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:     #0c0c0c;
+      --text:   #ffffff;
+      --muted:  #aaaaaa;
+      --purple: #7a6fd1;
+      --blue:   #4f6bd9;
+      --border: rgba(255,255,255,0.16);
+      --font:   'Poppins', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); font-weight: 300; min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* ── NAV ── */
+    header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-bottom: 1px solid transparent; padding: 0 2.5rem; height: 68px; display: flex; align-items: center; justify-content: space-between; transition: border-color 0.3s; }
+    header.scrolled { border-color: var(--border); }
+    .logo { height: 38px; cursor: pointer; display: flex; align-items: center; }
+    .logo img { height: 38px; width: auto; mix-blend-mode: screen; }
+    nav { display: flex; gap: 1.8rem; align-items: center; }
+    nav a { font-size: 0.85rem; font-weight: 400; color: var(--text); text-decoration: none; letter-spacing: 0.01em; transition: color 0.2s; cursor: pointer; }
+    nav a:hover { color: var(--blue); }
+    nav a.active { color: var(--blue); }
+
+    /* ── SECCIONES: el !important es clave para que el display:flex de #home/#reel no gane ── */
+    .section { display: none !important; }
+    .section.active { display: block !important; }
+
+    /* HOME — el flex va en el inner, no en la section */
+    #home { padding: 0; }
+    .home-inner { min-height: calc(100vh - 68px); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 4rem 2rem 7rem; }
+
+    .home-name {
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      line-height: 1.1;
+      color: #ffffff;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      animation: fadeUp 0.65s ease both;
+    }
+    .home-roles {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 1rem; font-weight: 500;
+      color: var(--purple);
+      letter-spacing: 0.06em; text-transform: uppercase;
+      margin-bottom: 1.1rem;
+      animation: fadeUp 0.65s 0.1s ease both;
+      flex-wrap: wrap; justify-content: center;
+    }
+    .home-roles .sep  { color: var(--purple); opacity: 0.5; }
+    .home-roles .star { color: var(--purple); font-size: 0.65rem; }
+    .home-bio { max-width: 540px; font-size: 0.9rem; line-height: 1.85; color: var(--muted); margin-bottom: 2.5rem; animation: fadeUp 0.65s 0.2s ease both; }
+    .home-ctas { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; justify-content: center; animation: fadeUp 0.65s 0.3s ease both; }
+    .btn-outline { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.6rem 1.7rem; border: 1.5px solid #ffffff; border-radius: 999px; color: #ffffff; font-family: var(--font); font-size: 0.83rem; font-weight: 400; letter-spacing: 0.02em; text-decoration: none; cursor: pointer; background: transparent; transition: background 0.2s, border-color 0.2s, color 0.2s; }
+    .btn-outline:hover { background: rgba(255,255,255,0.07); border-color: var(--blue); color: var(--blue); }
+    .btn-reel { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.7rem; border-radius: 999px; background: var(--blue); color: #fff; font-family: var(--font); font-size: 0.83rem; font-weight: 500; letter-spacing: 0.02em; cursor: pointer; border: 1.5px solid var(--blue); transition: background 0.2s, transform 0.15s; }
+    .btn-reel:hover { background: var(--purple); border-color: var(--purple); transform: scale(1.03); }
+    .linkedin-link { display: inline-flex; align-items: center; gap: 0.35rem; color: var(--muted); font-size: 0.8rem; text-decoration: none; transition: color 0.2s; margin-top: 1.2rem; animation: fadeUp 0.65s 0.4s ease both; }
+    .linkedin-link:hover { color: var(--blue); }
+    .linkedin-link svg { width: 15px; height: 15px; fill: currentColor; }
+
+    /* ── COMPARTIDO ── */
+    .section-inner { max-width: 720px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+    .section-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--blue); margin-bottom: 1.8rem; }
+
+    /* ── ILUMINACIÓN ── */
+    .yt-stack { display: flex; flex-direction: column; gap: 2rem; }
+    .yt-item  { display: flex; flex-direction: column; gap: 0.6rem; }
+    .yt-embed { width: 100%; aspect-ratio: 16/9; border-radius: 4px; overflow: hidden; background: #1a1a1a; }
+    .yt-embed iframe { width: 100%; height: 100%; border: none; display: block; }
+    .video-meta   { display: flex; align-items: center; gap: 0.5rem; padding: 0 0.2rem; }
+    .video-role   { font-size: 0.72rem; font-weight: 500; color: var(--blue); letter-spacing: 0.05em; text-transform: uppercase; }
+    .video-sep    { color: var(--border); font-size: 0.7rem; }
+    .video-client { font-size: 0.72rem; color: var(--muted); }
+
+    /* ── VIDEO ── */
+    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    .video-wrap { display: flex; flex-direction: column; gap: 0.55rem; }
+    .video-wrap.wide { grid-column: span 2; }
+    .video-item { background: #1a1a1a; border-radius: 4px; overflow: hidden; }
+    .video-wrap.tall .video-item { aspect-ratio: 9/16; }
+    .video-wrap.wide .video-item { aspect-ratio: 16/9; }
+    .video-item iframe { width: 100%; height: 100%; border: none; display: block; }
+
+    /* ── REEL — mismo ancho que los trabajos, sin flex en la section ── */
+    .reel-embed { width: 100%; aspect-ratio: 16/9; border-radius: 4px; overflow: hidden; background: #1a1a1a; }
+    .reel-embed iframe { width: 100%; height: 100%; border: none; display: block; }
+
+    /* ── SOBRE MÍ ── */
+    .sobre-inner { display: grid; grid-template-columns: 1fr 1.3fr; gap: 3rem; align-items: stretch; }
+    .sobre-foto  { width: 100%; min-height: 320px; border-radius: 3px; overflow: hidden; background: #1a1a1a; }
+    .sobre-foto img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+    .sobre-texto { padding-top: 0.4rem; }
+    .sobre-texto p { font-size: 0.9rem; line-height: 1.85; color: var(--muted); margin-bottom: 1.2rem; }
+    .sobre-texto p:last-child { margin-bottom: 0; }
+
+    /* ── FOOTER ── */
+    footer { border-top: 1px solid var(--border); padding: 1.6rem 2rem; text-align: center; }
+    footer p { font-size: 0.75rem; color: var(--muted); line-height: 1.9; }
+    footer a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    footer a:hover { color: var(--text); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ── MOBILE ── */
+    @media (max-width: 620px) {
+      header { padding: 0 1.2rem; }
+      nav { gap: 0.9rem; }
+      nav a { font-size: 0.75rem; }
+      .logo img { height: 28px; }
+      .home-name { font-size: 2.2rem; }
+      .home-ctas { flex-direction: column; gap: 0.7rem; }
+      .sobre-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .sobre-foto { aspect-ratio: 4/3; }
+      .section-inner { padding: 2rem 1.2rem 4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header id="site-header">
+    <span class="logo" onclick="showSection('home')">
+      <img src="LOGO_EMEPACHARI.png" alt="emepachari" />
+    </span>
+    <nav>
+      <a onclick="showSection('home')"        data-section="home"        class="active">hola!</a>
+      <a onclick="showSection('iluminacion')" data-section="iluminacion">iluminación.</a>
+      <a onclick="showSection('video')"       data-section="video">video.</a>
+      <a onclick="showSection('reel')"        data-section="reel">reel.</a>
+      <a onclick="showSection('sobre-mi')"    data-section="sobre-mi">sobre mí.</a>
+    </nav>
+  </header>
+
+  <!-- ══════════ HOME ══════════ -->
+  <section id="home" class="section active">
+    <div class="home-inner">
+      <h1 class="home-name">Mishel Pacheco Arias</h1>
+      <div class="home-roles">
+        <span class="star">✦</span>
+        <span>Video Editor</span>
+        <span class="sep">·</span>
+        <span>Content Creator</span>
+        <span class="sep">·</span>
+        <span>Production</span>
+        <span class="star">✦</span>
+      </div>
+      <p class="home-bio">
+        Editora de vídeo y creadora de contenido con seis años de experiencia en publicidad y redes sociales.
+        Empecé en Ogilvy aprendiendo cómo funciona una agencia de verdad, y en Movistar Plus+ es donde
+        más he crecido: produciendo contenido diario desde cero, proponiendo ideas y llevándolas hasta el
+        resultado final. Me muevo bien en todo el proceso y no me quedo solo en ejecutar. Ahora busco seguir
+        creciendo dentro de equipos donde pueda aportar lo que sé y seguir aprendiendo.
+      </p>
+      <div class="home-ctas">
+        <a href="mailto:emepachari@gmail.com" class="btn-outline">emepachari@gmail.com</a>
+        <button class="btn-reel" onclick="showSection('reel')">
+          <svg width="10" height="12" viewBox="0 0 10 12" fill="currentColor"><path d="M0 0l10 6-10 6V0z"/></svg>
+          Ver reel
+        </button>
+      </div>
+      <a class="linkedin-link" href="https://www.linkedin.com/in/TUUSUARIO" target="_blank" rel="noopener">
+        <!-- CAMBIA "TUUSUARIO" por tu usuario real de LinkedIn -->
+        <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+    </div>
+  </section>
+
+  <!-- ══════════ ILUMINACIÓN ══════════ -->
+  <section id="iluminacion" class="section">
+    <div class="section-inner">
+      <div class="yt-stack">
+
+        <div class="yt-item">
+          <div class="yt-embed">
+            <iframe src="https://www.youtube.com/embed/pta-YC_XC3w" title="Dante Caro - Malquerer"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-meta">
+            <span class="video-role">Dir. de Fotografía · Etalonaje</span>
+          </div>
+        </div>
+
+        <div class="yt-item">
+          <div class="yt-embed">
+            <iframe src="https://www.youtube.com/embed/LEreGnuY6ps" title="Lennis Rodriguez - La Última Vez"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-meta">
+            <span class="video-role">Producción · Dir. de Fotografía · Etalonaje</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ VIDEO ══════════ -->
+  <section id="video" class="section">
+    <div class="section-inner">
+      <p class="section-label">Video · Trabajos</p>
+      <div class="video-grid">
+
+        <div class="video-wrap tall">
+          <div class="video-item">
+            <iframe src="https://www.youtube.com/embed/f9y24kyy0Mc" title="Short Movistar Plus+ 1"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-meta">
+            <span class="video-role">Edición</span><span class="video-sep">·</span><span class="video-client">Movistar Plus+</span>
+          </div>
+        </div>
+
+        <div class="video-wrap tall">
+          <div class="video-item">
+            <iframe src="https://www.youtube.com/embed/0bGTS1L2c_E" title="Short Movistar Plus+ 2"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-meta">
+            <span class="video-role">Grabación · Edición</span><span class="video-sep">·</span><span class="video-client">Movistar Plus+</span>
+          </div>
+        </div>
+
+        <div class="video-wrap tall">
+          <div class="video-item">
+            <iframe src="https://www.youtube.com/embed/frraetujDhY" title="Short Movistar Plus+ 3"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-meta">
+            <span class="video-role">Edición</span><span class="video-sep">·</span><span class="video-client">Movistar Plus+</span>
+          </div>
+        </div>
+
+        <div class="video-wrap tall">
+          <div class="video-item">
+            <iframe src="https://www.youtube.com/embed/m7U9ILKh3kQ" title="Short Movistar Plus+ 4"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-meta">
+            <span class="video-role">Grabación · Edición</span><span class="video-sep">·</span><span class="video-client">Movistar Plus+</span>
+          </div>
+        </div>
+
+        <div class="video-wrap wide">
+          <div class="video-item">
+            <iframe src="https://www.youtube.com/embed/lJtduDZFJ9I" title="Making of Modelo 77"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-meta">
+            <span class="video-role">Grabación · Making of · Entrevistas</span><span class="video-sep">·</span><span class="video-client">Movistar Plus+</span>
+          </div>
+        </div>
+
+        <div class="video-wrap wide">
+          <div class="video-item">
+            <iframe src="https://www.youtube.com/embed/wmIoHPifEpg" title="Vídeo Movistar Plus+"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-meta">
+            <span class="video-role">Grabación · Edición</span><span class="video-sep">·</span><span class="video-client">Movistar Plus+</span>
+          </div>
+        </div>
+
+        <div class="video-wrap wide">
+          <div class="video-item">
+            <iframe src="https://www.youtube.com/embed/on4yqyv_9wE" title="Vídeo Movistar Plus+ 2"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-meta">
+            <span class="video-role">Grabación · Edición</span><span class="video-sep">·</span><span class="video-client">Movistar Plus+</span>
+          </div>
+        </div>
+
+        <div class="video-wrap wide">
+          <div class="video-item">
+            <iframe src="https://www.youtube.com/embed/GarISal4S-I" title="Ogilvy Motion Graphics"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="video-meta">
+            <span class="video-role">Edición · Motion Graphics</span><span class="video-sep">·</span><span class="video-client">Ogilvy</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ REEL ══════════ -->
+  <section id="reel" class="section">
+    <div class="section-inner">
+      <div class="reel-embed">
+        <iframe src="https://www.youtube.com/embed/LFPck6-BI6Q" title="Demo Reel — Mishel Pacheco Arias"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ SOBRE MÍ ══════════ -->
+  <section id="sobre-mi" class="section">
+    <div class="section-inner">
+      <div class="sobre-inner">
+        <div class="sobre-foto">
+          <img src="SOBREMI.jpg" alt="Mishel Pacheco Arias" />
+        </div>
+        <div class="sobre-texto">
+          <p>
+            Llevo seis años trabajando en publicidad y redes sociales, entre una agencia y una plataforma
+            con mucho volumen de contenido. He gestionado piezas que pedían precisión y otras que pedían
+            ritmo y cantidad. En los dos sitios aprendí cosas muy distintas.
+          </p>
+          <p>
+            Lo que más me gusta de este trabajo es que nunca terminas de aprender. Cada proyecto tiene su
+            lógica, su ritmo, su forma de contar las cosas. Me interesa todo el proceso, no solo la parte técnica.
+          </p>
+          <p>
+            Tengo formación en dirección de fotografía y producción, y me gusta seguir sumando. El sector
+            no para y yo tampoco quiero hacerlo.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ FOOTER ══════════ -->
+  <footer>
+    <p>
+      <a href="mailto:emepachari@gmail.com">emepachari@gmail.com</a>
+      &nbsp;·&nbsp;
+      <a href="https://www.linkedin.com/in/TUUSUARIO" target="_blank" rel="noopener">LinkedIn</a>
+      <br>© 2026 emepachari
+    </p>
+  </footer>
+
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+      var section = document.getElementById(id);
+      if (section) section.classList.add('active');
+      var navLink = document.querySelector('nav a[data-section="' + id + '"]');
+      if (navLink) navLink.classList.add('active');
+      try { history.pushState({ section: id }, '', '#' + id); } catch(e) {}
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+    window.addEventListener('DOMContentLoaded', function() {
+      var hash = location.hash.replace('#', '');
+      if (hash && document.getElementById(hash)) showSection(hash);
+    });
+    window.addEventListener('popstate', function(e) {
+      var id = (e.state && e.state.section) ? e.state.section : 'home';
+      showSection(id);
+    });
+    window.addEventListener('scroll', function() {
+      document.getElementById('site-header').classList.toggle('scrolled', window.scrollY > 10);
+    });
+  </script>
+
+</body>
+</html>
