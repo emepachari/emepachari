@@ -30,33 +30,14 @@
     nav a:hover { color: var(--blue); }
     nav a.active { color: var(--blue); }
 
-    /* ── SECCIONES: el !important es clave para que el display:flex de #home/#reel no gane ── */
     .section { display: none !important; }
     .section.active { display: block !important; }
 
-    /* HOME — el flex va en el inner, no en la section */
     #home { padding: 0; }
     .home-inner { min-height: calc(100vh - 68px); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 4rem 2rem 7rem; }
 
-    .home-name {
-      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      line-height: 1.1;
-      color: #ffffff;
-      text-transform: uppercase;
-      margin-bottom: 0.75rem;
-      animation: fadeUp 0.65s ease both;
-    }
-    .home-roles {
-      display: flex; align-items: center; gap: 0.5rem;
-      font-size: 1rem; font-weight: 500;
-      color: var(--purple);
-      letter-spacing: 0.06em; text-transform: uppercase;
-      margin-bottom: 1.1rem;
-      animation: fadeUp 0.65s 0.1s ease both;
-      flex-wrap: wrap; justify-content: center;
-    }
+    .home-name { font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 700; letter-spacing: 0.06em; line-height: 1.1; color: #ffffff; text-transform: uppercase; margin-bottom: 0.75rem; animation: fadeUp 0.65s ease both; }
+    .home-roles { display: flex; align-items: center; gap: 0.5rem; font-size: 1rem; font-weight: 500; color: var(--purple); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 1.1rem; animation: fadeUp 0.65s 0.1s ease both; flex-wrap: wrap; justify-content: center; }
     .home-roles .sep  { color: var(--purple); opacity: 0.5; }
     .home-roles .star { color: var(--purple); font-size: 0.65rem; }
     .home-bio { max-width: 540px; font-size: 0.9rem; line-height: 1.85; color: var(--muted); margin-bottom: 2.5rem; animation: fadeUp 0.65s 0.2s ease both; }
@@ -72,6 +53,35 @@
     /* ── COMPARTIDO ── */
     .section-inner { max-width: 720px; margin: 0 auto; padding: 3rem 2rem 5rem; }
     .section-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--blue); margin-bottom: 1.8rem; }
+
+    /* ── FACADE (miniatura + play) ── */
+    .yt-facade {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+      display: block;
+      background: #111;
+    }
+    .yt-facade img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: filter 0.25s;
+    }
+    .yt-facade:hover img { filter: brightness(0.7); }
+    .play-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      transition: transform 0.2s, opacity 0.2s;
+      opacity: 0.92;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+    }
+    .yt-facade:hover .play-btn { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
 
     /* ── ILUMINACIÓN ── */
     .yt-stack { display: flex; flex-direction: column; gap: 2rem; }
@@ -92,7 +102,7 @@
     .video-wrap.wide .video-item { aspect-ratio: 16/9; }
     .video-item iframe { width: 100%; height: 100%; border: none; display: block; }
 
-    /* ── REEL — mismo ancho que los trabajos, sin flex en la section ── */
+    /* ── REEL ── */
     .reel-embed { width: 100%; aspect-ratio: 16/9; border-radius: 4px; overflow: hidden; background: #1a1a1a; }
     .reel-embed iframe { width: 100%; height: 100%; border: none; display: block; }
 
@@ -112,7 +122,6 @@
 
     @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* ── MOBILE ── */
     @media (max-width: 620px) {
       header { padding: 0 1.2rem; }
       nav { gap: 0.9rem; }
@@ -169,7 +178,6 @@
         </button>
       </div>
       <a class="linkedin-link" href="https://www.linkedin.com/in/emepachecoarias" target="_blank" rel="noopener">
-        <!-- CAMBIA "TUUSUARIO" por tu usuario real de LinkedIn -->
         <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
         LinkedIn
       </a>
@@ -183,8 +191,10 @@
 
         <div class="yt-item">
           <div class="yt-embed">
-            <iframe src="https://www.youtube.com/embed/pta-YC_XC3w" title="Dante Caro - Malquerer"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div class="yt-facade" data-id="pta-YC_XC3w">
+              <img src="https://img.youtube.com/vi/pta-YC_XC3w/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/pta-YC_XC3w/hqdefault.jpg'" alt="Vídeo iluminación 1" loading="lazy" />
+              <div class="play-btn"><svg width="64" height="44" viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#ff0000"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div>
+            </div>
           </div>
           <div class="video-meta">
             <span class="video-role">Dir. de Fotografía · Etalonaje</span>
@@ -193,8 +203,10 @@
 
         <div class="yt-item">
           <div class="yt-embed">
-            <iframe src="https://www.youtube.com/embed/LEreGnuY6ps" title="Lennis Rodriguez - La Última Vez"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div class="yt-facade" data-id="LEreGnuY6ps">
+              <img src="https://img.youtube.com/vi/LEreGnuY6ps/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/LEreGnuY6ps/hqdefault.jpg'" alt="Vídeo iluminación 2" loading="lazy" />
+              <div class="play-btn"><svg width="64" height="44" viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#ff0000"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div>
+            </div>
           </div>
           <div class="video-meta">
             <span class="video-role">Producción · Dir. de Fotografía · Etalonaje</span>
@@ -213,82 +225,82 @@
 
         <div class="video-wrap tall">
           <div class="video-item">
-            <iframe src="https://www.youtube.com/embed/f9y24kyy0Mc" title="Short Movistar Plus+ 1"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div class="yt-facade" data-id="f9y24kyy0Mc">
+              <img src="https://img.youtube.com/vi/f9y24kyy0Mc/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/f9y24kyy0Mc/hqdefault.jpg'" alt="Short Movistar Plus+ 1" loading="lazy" />
+              <div class="play-btn"><svg width="48" height="34" viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#ff0000"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div>
+            </div>
           </div>
-          <div class="video-meta">
-            <span class="video-role">Edición</span><span class="video-sep">·</span><span class="video-client">Movistar Plus+</span>
-          </div>
+          <div class="video-meta"><span class="video-role">Edición</span><span class="video-sep">·</span><span class="video-client">Movistar Plus+</span></div>
         </div>
 
         <div class="video-wrap tall">
           <div class="video-item">
-            <iframe src="https://www.youtube.com/embed/0bGTS1L2c_E" title="Short Movistar Plus+ 2"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div class="yt-facade" data-id="0bGTS1L2c_E">
+              <img src="https://img.youtube.com/vi/0bGTS1L2c_E/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/0bGTS1L2c_E/hqdefault.jpg'" alt="Short Movistar Plus+ 2" loading="lazy" />
+              <div class="play-btn"><svg width="48" height="34" viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#ff0000"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div>
+            </div>
           </div>
-          <div class="video-meta">
-            <span class="video-role">Grabación · Edición</span><span class="video-sep">·</span><span class="video-client">Movistar Plus+</span>
-          </div>
+          <div class="video-meta"><span class="video-role">Grabación · Edición</span><span class="video-sep">·</span><span class="video-client">Movistar Plus+</span></div>
         </div>
 
         <div class="video-wrap tall">
           <div class="video-item">
-            <iframe src="https://www.youtube.com/embed/frraetujDhY" title="Short Movistar Plus+ 3"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div class="yt-facade" data-id="frraetujDhY">
+              <img src="https://img.youtube.com/vi/frraetujDhY/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/frraetujDhY/hqdefault.jpg'" alt="Short Movistar Plus+ 3" loading="lazy" />
+              <div class="play-btn"><svg width="48" height="34" viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#ff0000"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div>
+            </div>
           </div>
-          <div class="video-meta">
-            <span class="video-role">Edición</span><span class="video-sep">·</span><span class="video-client">Movistar Plus+</span>
-          </div>
+          <div class="video-meta"><span class="video-role">Edición</span><span class="video-sep">·</span><span class="video-client">Movistar Plus+</span></div>
         </div>
 
         <div class="video-wrap tall">
           <div class="video-item">
-            <iframe src="https://www.youtube.com/embed/m7U9ILKh3kQ" title="Short Movistar Plus+ 4"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div class="yt-facade" data-id="m7U9ILKh3kQ">
+              <img src="https://img.youtube.com/vi/m7U9ILKh3kQ/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/m7U9ILKh3kQ/hqdefault.jpg'" alt="Short Movistar Plus+ 4" loading="lazy" />
+              <div class="play-btn"><svg width="48" height="34" viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#ff0000"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div>
+            </div>
           </div>
-          <div class="video-meta">
-            <span class="video-role">Grabación · Edición</span><span class="video-sep">·</span><span class="video-client">Movistar Plus+</span>
-          </div>
+          <div class="video-meta"><span class="video-role">Grabación · Edición</span><span class="video-sep">·</span><span class="video-client">Movistar Plus+</span></div>
         </div>
 
         <div class="video-wrap wide">
           <div class="video-item">
-            <iframe src="https://www.youtube.com/embed/lJtduDZFJ9I" title="Making of Modelo 77"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div class="yt-facade" data-id="lJtduDZFJ9I">
+              <img src="https://img.youtube.com/vi/lJtduDZFJ9I/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/lJtduDZFJ9I/hqdefault.jpg'" alt="Making of Modelo 77" loading="lazy" />
+              <div class="play-btn"><svg width="64" height="44" viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#ff0000"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div>
+            </div>
           </div>
-          <div class="video-meta">
-            <span class="video-role">Grabación · Making of · Entrevistas</span><span class="video-sep">·</span><span class="video-client">Movistar Plus+</span>
-          </div>
+          <div class="video-meta"><span class="video-role">Grabación · Making of · Entrevistas</span><span class="video-sep">·</span><span class="video-client">Movistar Plus+</span></div>
         </div>
 
         <div class="video-wrap wide">
           <div class="video-item">
-            <iframe src="https://www.youtube.com/embed/wmIoHPifEpg" title="Vídeo Movistar Plus+"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div class="yt-facade" data-id="wmIoHPifEpg">
+              <img src="https://img.youtube.com/vi/wmIoHPifEpg/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/wmIoHPifEpg/hqdefault.jpg'" alt="Vídeo Movistar Plus+" loading="lazy" />
+              <div class="play-btn"><svg width="64" height="44" viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#ff0000"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div>
+            </div>
           </div>
-          <div class="video-meta">
-            <span class="video-role">Grabación · Edición</span><span class="video-sep">·</span><span class="video-client">Movistar Plus+</span>
-          </div>
+          <div class="video-meta"><span class="video-role">Grabación · Edición</span><span class="video-sep">·</span><span class="video-client">Movistar Plus+</span></div>
         </div>
 
         <div class="video-wrap wide">
           <div class="video-item">
-            <iframe src="https://www.youtube.com/embed/on4yqyv_9wE" title="Vídeo Movistar Plus+ 2"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div class="yt-facade" data-id="on4yqyv_9wE">
+              <img src="https://img.youtube.com/vi/on4yqyv_9wE/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/on4yqyv_9wE/hqdefault.jpg'" alt="Vídeo Movistar Plus+ 2" loading="lazy" />
+              <div class="play-btn"><svg width="64" height="44" viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#ff0000"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div>
+            </div>
           </div>
-          <div class="video-meta">
-            <span class="video-role">Grabación · Edición</span><span class="video-sep">·</span><span class="video-client">Movistar Plus+</span>
-          </div>
+          <div class="video-meta"><span class="video-role">Grabación · Edición</span><span class="video-sep">·</span><span class="video-client">Movistar Plus+</span></div>
         </div>
 
         <div class="video-wrap wide">
           <div class="video-item">
-            <iframe src="https://www.youtube.com/embed/GarISal4S-I" title="Ogilvy Motion Graphics"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div class="yt-facade" data-id="GarISal4S-I">
+              <img src="https://img.youtube.com/vi/GarISal4S-I/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/GarISal4S-I/hqdefault.jpg'" alt="Ogilvy Motion Graphics" loading="lazy" />
+              <div class="play-btn"><svg width="64" height="44" viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#ff0000"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div>
+            </div>
           </div>
-          <div class="video-meta">
-            <span class="video-role">Edición · Motion Graphics</span><span class="video-sep">·</span><span class="video-client">Ogilvy</span>
-          </div>
+          <div class="video-meta"><span class="video-role">Edición · Motion Graphics</span><span class="video-sep">·</span><span class="video-client">Ogilvy</span></div>
         </div>
 
       </div>
@@ -299,8 +311,10 @@
   <section id="reel" class="section">
     <div class="section-inner">
       <div class="reel-embed">
-        <iframe src="https://www.youtube.com/embed/LFPck6-BI6Q" title="Demo Reel — Mishel Pacheco Arias"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class="yt-facade" data-id="LFPck6-BI6Q">
+          <img src="https://img.youtube.com/vi/LFPck6-BI6Q/maxresdefault.jpg" onerror="this.src='https://img.youtube.com/vi/LFPck6-BI6Q/hqdefault.jpg'" alt="Demo Reel Mishel Pacheco Arias" loading="lazy" />
+          <div class="play-btn"><svg width="68" height="48" viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#ff0000"/><path d="M45 24 27 14v20" fill="#fff"/></svg></div>
+        </div>
       </div>
     </div>
   </section>
@@ -313,19 +327,9 @@
           <img src="SOBREMI.jpg" alt="Mishel Pacheco Arias" />
         </div>
         <div class="sobre-texto">
-          <p>
-            Llevo seis años trabajando en publicidad y redes sociales, entre una agencia y una plataforma
-            con mucho volumen de contenido. He gestionado piezas que pedían precisión y otras que pedían
-            ritmo y cantidad. En los dos sitios aprendí cosas muy distintas.
-          </p>
-          <p>
-            Lo que más me gusta de este trabajo es que nunca terminas de aprender. Cada proyecto tiene su
-            lógica, su ritmo, su forma de contar las cosas. Me interesa todo el proceso, no solo la parte técnica.
-          </p>
-          <p>
-            Tengo formación en dirección de fotografía y producción, y me gusta seguir sumando. El sector
-            no para y yo tampoco quiero hacerlo.
-          </p>
+          <p>Llevo seis años trabajando en publicidad y redes sociales, entre una agencia y una plataforma con mucho volumen de contenido. He gestionado piezas que pedían precisión y otras que pedían ritmo y cantidad. En los dos sitios aprendí cosas muy distintas.</p>
+          <p>Lo que más me gusta de este trabajo es que nunca terminas de aprender. Cada proyecto tiene su lógica, su ritmo, su forma de contar las cosas. Me interesa todo el proceso, no solo la parte técnica.</p>
+          <p>Tengo formación en dirección de fotografía y producción, y me gusta seguir sumando. El sector no para y yo tampoco quiero hacerlo.</p>
         </div>
       </div>
     </div>
@@ -342,9 +346,10 @@
   </footer>
 
   <script>
+    // Navegación
     function showSection(id) {
-      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-      document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+      document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
+      document.querySelectorAll('nav a').forEach(function(a) { a.classList.remove('active'); });
       var section = document.getElementById(id);
       if (section) section.classList.add('active');
       var navLink = document.querySelector('nav a[data-section="' + id + '"]');
@@ -355,6 +360,19 @@
     window.addEventListener('DOMContentLoaded', function() {
       var hash = location.hash.replace('#', '');
       if (hash && document.getElementById(hash)) showSection(hash);
+
+      // Facade: al hacer clic en la miniatura, carga el iframe con autoplay
+      document.querySelectorAll('.yt-facade').forEach(function(facade) {
+        facade.addEventListener('click', function() {
+          var id = this.dataset.id;
+          var iframe = document.createElement('iframe');
+          iframe.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0';
+          iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+          iframe.allowFullscreen = true;
+          iframe.style.cssText = 'width:100%;height:100%;border:none;display:block;';
+          this.parentNode.replaceChild(iframe, this);
+        });
+      });
     });
     window.addEventListener('popstate', function(e) {
       var id = (e.state && e.state.section) ? e.state.section : 'home';
